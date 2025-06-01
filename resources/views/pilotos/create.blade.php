@@ -26,7 +26,7 @@
                 <x-text-input name="puntos" />
             </div>
 
-            <div x-show="status === 'probador'">Soy el puto piloto probador
+            <div x-show="status === 'probador'">
                 <x-input-label>Vueltas</x-input-label>
                 <x-text-input name="vueltas" />
             </div>

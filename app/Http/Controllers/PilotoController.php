@@ -9,6 +9,7 @@ use App\Models\Probador;
 use App\Models\Reserva;
 use App\Models\Titular;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class PilotoController extends Controller
 {
@@ -98,7 +99,7 @@ class PilotoController extends Controller
      */
     public function show(Piloto $piloto)
     {
-        return view('pilotos.show', $piloto);
+        return view('pilotos.show', ['piloto' => $piloto]);
     }
 
     /**
@@ -125,5 +126,10 @@ class PilotoController extends Controller
         $piloto->delete();
 
         return redirect()->route('pilotos.index');
+    }
+
+    public function cambiar(Piloto $piloto, Request $request)
+    {
+
     }
 }

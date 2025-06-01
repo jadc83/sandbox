@@ -14,6 +14,6 @@ class Piloto extends Model
 
     public function asignable()
     {
-        return $this->morphTo(Piloto::class, 'asignable');
+        return $this->morphTo();
     }
 }
