@@ -1,15 +1,15 @@
 <x-app-layout>
     <div x-data="{ status: '' }" class="p-6 bg-white shadow-md rounded-lg text-center">
 
-        <select id="status-select" x-model="status">
-            <option value="" disabled selected>-- Elige un estado --</option>
-            <option value="titular">Titular</option>
-            <option value="reserva">Reserva</option>
-            <option value="probador">Probador</option>
-        </select>
-
-        <form action="">
+        <form action="{{route('pilotos.store')}}" method="post">
             @csrf
+            <select name="status" x-model="status">
+                <option value="" disabled selected>-- Elige un estado --</option>
+                <option value="titular">Titular</option>
+                <option value="reserva">Reserva</option>
+                <option value="probador">Probador</option>
+            </select>
+
             <x-input-label>Nombre</x-input-label>
             <x-text-input name="nombre" />
             <x-input-label>Fecha de nacimiento</x-input-label>
@@ -26,7 +26,10 @@
                 <x-text-input name="puntos" />
             </div>
 
-            <div x-show="status === 'probador'">Soy el puto piloto probador</div>
+            <div x-show="status === 'probador'">Soy el puto piloto probador
+                <x-input-label>Vueltas</x-input-label>
+                <x-text-input name="vueltas" />
+            </div>
             <x-primary-button>Guardar piloto</x-primary-button>
         </form>
     </div>

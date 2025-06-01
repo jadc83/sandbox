@@ -9,4 +9,9 @@ class Reserva extends Model
 {
     /** @use HasFactory<\Database\Factories\ReservaFactory> */
     use HasFactory;
+
+    public function piloto()
+    {
+        return $this->morphOne(Piloto::class, 'asignable');
+    }
 }

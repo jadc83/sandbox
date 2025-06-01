@@ -11,4 +11,9 @@ class Titular extends Model
     use HasFactory;
 
     protected $table = 'titulares';
+
+    public function pilotos()
+    {
+        return $this->morphMany(Piloto::class, 'asignable');
+    }
 }
