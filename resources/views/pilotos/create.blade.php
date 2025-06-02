@@ -1,4 +1,5 @@
 <x-app-layout>
+
     <div x-data="{ status: '' }" class="p-6 bg-white shadow-md rounded-lg text-center">
 
         <form action="{{route('pilotos.store')}}" method="post">
@@ -13,7 +14,7 @@
             <x-input-label>Nombre</x-input-label>
             <x-text-input name="nombre" />
             <x-input-label>Fecha de nacimiento</x-input-label>
-            <x-text-input type="datetime-local" name="nacimiento" />
+            <x-text-input type="date" name="nacimiento" />
             <x-input-label>Nacionalidad</x-input-label>
             <x-text-input name="nacionalidad"/>
 

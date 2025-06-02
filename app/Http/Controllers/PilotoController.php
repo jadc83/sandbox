@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePilotoRequest;
 use App\Http\Requests\UpdatePilotoRequest;
 use App\Models\Piloto;
-use App\Models\Probador;
-use App\Models\Reserva;
-use App\Models\Titular;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PilotoController extends Controller
@@ -34,64 +29,19 @@ class PilotoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePilotoRequest $request)
+    public function store(Request $request)
     {
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'nacionalidad' => 'required|string',
+            'nacimiento' => 'required|date',
+            'status' => 'required|in:titular,reserva,probador',
+            'ganadas' => 'required|integer',
+            'podios' => 'required|integer',
+            'puntos' => 'required|integer'
+        ]);
 
-        $firma = Carbon::now();
-        $finiquito = $firma->addYears(3);
-
-        if ($request->status === 'titular')
-        {
-            $titular = new Titular();
-            $titular->ganadas = $request->ganadas;
-            $titular->podios = $request->podios;
-            $titular->puntos = $request->puntos;
-            $titular->inicio_contrato = $firma;
-            $titular->fin_contrato = $finiquito;
-            $titular->save();
-
-            $titular->pilotos()->create([
-                'nombre' => $request->nombre,
-                'nacionalidad' => $request->nacionalidad,
-                'nacimiento' => $request->nacimiento]);
-
-            return redirect()->route('pilotos.index');
-
-
-        } elseif ($request->status === 'reserva') {
-
-            $reserva = new Reserva();
-            $reserva->ganadas = $request->ganadas;
-            $reserva->podios = $request->podios;
-            $reserva->puntos = $request->puntos;
-            $reserva->inicio_contrato = $firma;
-            $reserva->fin_contrato = $finiquito;
-            $reserva->save();
-
-            $reserva->piloto()->create([
-                'nombre' => $request->nombre,
-                'nacionalidad' => $request->nacionalidad,
-                'nacimiento' => $request->nacimiento]);
-
-            return redirect()->route('pilotos.index');
-
-        } elseif ($request->status === 'probador') {
-
-            $probador = new Probador();
-            $probador->vueltas = $request->vueltas;
-            $probador->inicio_contrato = $firma;
-            $probador->fin_contrato = $finiquito;
-
-            $probador->save();
-            $probador->piloto()->create([
-                'nombre' => $request->nombre,
-                'nacionalidad' => $request->nacionalidad,
-                'nacimiento' => $request->nacimiento]);
-
-            return redirect()->route('pilotos.index');
-        }
-
-        return abort(403, 'Algo ha fallado en el registro del piloto');
+      return constructor($validated);
     }
 
     /**
@@ -107,7 +57,7 @@ class PilotoController extends Controller
      */
     public function edit(Piloto $piloto)
     {
-        //
+        return view('pilotos.edit', ['piloto' => $piloto]);
     }
 
     /**
@@ -128,8 +78,4 @@ class PilotoController extends Controller
         return redirect()->route('pilotos.index');
     }
 
-    public function cambiar(Piloto $piloto, Request $request)
-    {
-
-    }
 }
