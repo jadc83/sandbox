@@ -100,8 +100,6 @@ class PilotoController extends Controller
 
             return redirect()->route('pilotos.index');
 
-
-
         } elseif ($request->status === 'reserva') {
 
             return "hola";
@@ -127,34 +125,6 @@ class PilotoController extends Controller
     public function cambiar(Request $request, Piloto $piloto){
 
 
-        $firma = Carbon::now();
-        $finiquito = $firma->addYears(3);
-
-        if ($request->status === 'titular'){
-
-            $titular = new Titular();
-            $titular->ganadas = $piloto->asignable->ganadas;
-            $titular->podios = $piloto->asignable->podios;
-            $titular->puntos = $piloto->asignable->puntos;
-            $titular->inicio_contrato = $firma;
-            $titular->fin_contrato = $finiquito;
-            $titular->save();
-
-            $piloto->asignable()->associate($titular);
-
-            return redirect()->route('pilotos.index');
-
-
-
-        } elseif ($request->status === 'reserva') {
-
-            return "hola";
-
-        } else {
-
-            return "adios";
-
-        }
     }
 
 }
