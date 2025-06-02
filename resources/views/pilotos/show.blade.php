@@ -21,7 +21,7 @@
                 <div>{{ $piloto->asignable->puntos ?? 'N/A' }}</div>
             </div>
 
-        <form action="{{route('pilotos.update', $piloto)}}" method="post">
+        <form action="{{route('pilotos.cambiar', $piloto)}}" method="post">
             @csrf
             <select name="status">
                 <option value="" disabled selected>Asignar nuevo puesto</option>

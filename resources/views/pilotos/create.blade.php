@@ -1,14 +1,24 @@
 <x-app-layout>
 
-    <div x-data="{ status: '' }" class="p-6 bg-white shadow-md rounded-lg text-center">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+    <div x-data="{ status: '{{ old('status') }}' }" class="p-6 bg-white shadow-md rounded-lg text-center">
 
         <form action="{{route('pilotos.store')}}" method="post">
             @csrf
             <select name="status" x-model="status">
-                <option value="" disabled selected>-- Elige un estado --</option>
-                <option value="titular">Titular</option>
-                <option value="reserva">Reserva</option>
-                <option value="probador">Probador</option>
+                <option value="" disabled {{ old('status') ? '' : 'selected' }}>-- Elige un estado --</option>
+                <option value="titular" {{ old('status') === 'titular' ? 'selected' : '' }}>Titular</option>
+                <option value="reserva" {{ old('status') === 'reserva' ? 'selected' : '' }}>Reserva</option>
+                <option value="probador" {{ old('status') === 'probador' ? 'selected' : '' }}>Probador</option>
             </select>
 
             <x-input-label>Nombre</x-input-label>

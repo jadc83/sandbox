@@ -19,5 +19,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('pilotos', PilotoController::class)->parameters(['pilotos' => 'piloto']);
+Route::post('/pilotos/{piloto}/cambiar', [PilotoController::class, 'cambiar'])->name('pilotos.cambiar');
 
 require __DIR__.'/auth.php';

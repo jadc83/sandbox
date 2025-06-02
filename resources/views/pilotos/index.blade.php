@@ -2,7 +2,9 @@
 
         @foreach ($pilotos as $piloto)
             <p>
-                {{$piloto->nombre}}
+                <a href="{{route('pilotos.show', $piloto )}}">
+                    {{$piloto->nombre}}
+                </a>
             </p>
         @endforeach
 

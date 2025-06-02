@@ -11,6 +11,7 @@ class Probador extends Model
     use HasFactory;
 
     protected $table = 'probadores';
+    protected $fillable = ['vueltas'];
 
     public function piloto()
     {

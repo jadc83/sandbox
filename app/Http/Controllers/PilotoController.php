@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatePilotoRequest;
 use App\Models\Piloto;
+use App\Models\Titular;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PilotoController extends Controller
@@ -31,17 +33,32 @@ class PilotoController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $reglasBasicas = [
             'nombre' => 'required|string|max:255',
             'nacionalidad' => 'required|string',
             'nacimiento' => 'required|date',
             'status' => 'required|in:titular,reserva,probador',
-            'ganadas' => 'required|integer',
-            'podios' => 'required|integer',
-            'puntos' => 'required|integer'
-        ]);
+        ];
 
-      return constructor($validated);
+        if ($request->status === 'titular' || $request->status === 'reserva') {
+
+            $reglasExtra = [
+                'ganadas' => 'required|integer',
+                'podios' => 'required|integer',
+                'puntos' => 'required|integer',
+            ];
+        } elseif ($request->status === 'probador') {
+
+            $reglasExtra = [
+                'vueltas' => 'required|integer',
+            ];
+        } else {
+
+            $reglasExtra = [];
+        }
+
+        $validated = array_merge($reglasBasicas, $reglasExtra);
+        return constructor($request->validate($validated));
     }
 
     /**
@@ -63,9 +80,38 @@ class PilotoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePilotoRequest $request, Piloto $piloto)
+    public function update(Request $request, Piloto $piloto)
     {
-        //
+
+        $firma = Carbon::now();
+        $finiquito = $firma->addYears(3);
+
+        if ($request->status === 'titular'){
+
+            $titular = new Titular();
+            $titular->ganadas = $piloto->asignable->ganadas;
+            $titular->podios = $piloto->asignable->podios;
+            $titular->puntos = $piloto->asignable->puntos;
+            $titular->inicio_contrato = $firma;
+            $titular->fin_contrato = $finiquito;
+            $titular->save();
+
+            $piloto->asignable()->associate($titular);
+
+            return redirect()->route('pilotos.index');
+
+
+
+        } elseif ($request->status === 'reserva') {
+
+            return "hola";
+
+        } else {
+
+            return "adios";
+
+        }
+
     }
 
     /**
@@ -76,6 +122,39 @@ class PilotoController extends Controller
         $piloto->delete();
 
         return redirect()->route('pilotos.index');
+    }
+
+    public function cambiar(Request $request, Piloto $piloto){
+
+
+        $firma = Carbon::now();
+        $finiquito = $firma->addYears(3);
+
+        if ($request->status === 'titular'){
+
+            $titular = new Titular();
+            $titular->ganadas = $piloto->asignable->ganadas;
+            $titular->podios = $piloto->asignable->podios;
+            $titular->puntos = $piloto->asignable->puntos;
+            $titular->inicio_contrato = $firma;
+            $titular->fin_contrato = $finiquito;
+            $titular->save();
+
+            $piloto->asignable()->associate($titular);
+
+            return redirect()->route('pilotos.index');
+
+
+
+        } elseif ($request->status === 'reserva') {
+
+            return "hola";
+
+        } else {
+
+            return "adios";
+
+        }
     }
 
 }

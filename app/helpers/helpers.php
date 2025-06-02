@@ -27,7 +27,7 @@ use Carbon\Carbon;
                 'nacimiento' => $validated['nacimiento']
             ]);
 
-        } elseif ($validated->status === 'reserva') {
+        } elseif ($validated['status'] === 'reserva') {
 
             $reserva = new Reserva();
             $reserva->ganadas = $validated['ganadas'];
@@ -38,11 +38,12 @@ use Carbon\Carbon;
             $reserva->save();
 
             $reserva->piloto()->create([
-                'nombre' => $validated->nombre,
-                'nacionalidad' => $validated->nacionalidad,
-                'nacimiento' => $validated->nacimiento]);
+                'nombre' => $validated['nombre'],
+                'nacionalidad' => $validated['nacionalidad'],
+                'nacimiento' => $validated['nacimiento']
+            ]);
 
-        } elseif ($validated->status === 'probador') {
+        } elseif ($validated['status'] === 'probador') {
 
             $probador = new Probador();
             $probador->vueltas = $validated['vueltas'];
@@ -51,9 +52,10 @@ use Carbon\Carbon;
 
             $probador->save();
             $probador->piloto()->create([
-                'nombre' => $validated->nombre,
-                'nacionalidad' => $validated->nacionalidad,
-                'nacimiento' => $validated->nacimiento]);
+                'nombre' => $validated['nombre'],
+                'nacionalidad' => $validated['nacionalidad'],
+                'nacimiento' => $validated['nacimiento']
+            ]);
             }
 
         return redirect()->route('pilotos.index');
