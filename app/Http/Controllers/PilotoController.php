@@ -47,6 +47,7 @@ class PilotoController extends Controller
                 'podios' => 'required|integer',
                 'puntos' => 'required|integer',
             ];
+
         } elseif ($request->status === 'probador') {
 
             $reglasExtra = [
